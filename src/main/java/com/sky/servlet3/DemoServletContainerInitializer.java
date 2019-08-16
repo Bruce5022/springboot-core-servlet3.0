@@ -1,11 +1,13 @@
 package com.sky.servlet3;
 
+import com.sky.servlet3.component.HelloFilter;
+import com.sky.servlet3.component.HelloListener;
+import com.sky.servlet3.component.HelloServlet;
 import com.sky.servlet3.service.DemoService;
 
-import javax.servlet.ServletContainerInitializer;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
+import javax.servlet.*;
 import javax.servlet.annotation.HandlesTypes;
+import java.util.EnumSet;
 import java.util.Set;
 
 // 容器启动的时候,会将@HandlesTypes指定的这个类型下面的子类(实现类子接口等)传递过来
@@ -23,5 +25,16 @@ public class DemoServletContainerInitializer implements ServletContainerInitiali
         System.out.println("--->All aware classes as follow :");
         set.stream().forEach(System.out::println);
         System.out.println("--->All aware classes end !!!");
+
+        // 可以使用servletContext注册web组件(servlet,filter,listener)
+        // 如果引入第三方包,需要往里面增加监听器,过滤器,可以用此方法
+        // 注册servlet
+        ServletRegistration.Dynamic helloServlet = servletContext.addServlet("helloServlet", new HelloServlet());
+        helloServlet.addMapping("/hello");
+        // 注册监听器
+        servletContext.addListener(new HelloListener());
+        // 注册过滤器
+        FilterRegistration.Dynamic helloFilter = servletContext.addFilter("helloFilter", HelloFilter.class);
+        helloFilter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/*");
     }
 }

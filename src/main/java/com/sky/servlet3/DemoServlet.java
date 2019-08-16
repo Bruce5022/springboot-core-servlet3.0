@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/hello")
+@WebServlet("/demo")
 public class DemoServlet extends HttpServlet {
 
     @Override
@@ -17,6 +17,6 @@ public class DemoServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.getOutputStream().write("Hello World , Good morning ,中国 !".getBytes());
+        resp.getOutputStream().write("Hello demo , Good morning !".getBytes());
     }
 }
